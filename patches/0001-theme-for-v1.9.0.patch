@@ -1,0 +1,505 @@
+From ca17a18d0285613d0d7255016c68a4ab0a21ff15 Mon Sep 17 00:00:00 2001
+From: DerLev <levin.schroeren@gmail.com>
+Date: Tue, 28 Jun 2022 00:40:16 +0200
+Subject: [PATCH] theme for v1.9.0
+
+---
+ resources/scripts/components/MessageBox.tsx   |  4 +--
+ .../scripts/components/NavigationBar.tsx      | 10 +++---
+ .../components/auth/LoginFormContainer.tsx    |  5 +--
+ .../components/dashboard/ServerRow.tsx        | 32 +++++++++----------
+ .../scripts/components/elements/Button.tsx    |  6 ++--
+ .../scripts/components/elements/Input.tsx     |  6 ++--
+ .../components/elements/ProgressBar.tsx       |  4 +--
+ .../components/elements/SubNavigation.tsx     |  2 +-
+ .../scripts/components/elements/Switch.tsx    |  2 +-
+ .../components/server/backups/BackupRow.tsx   |  4 +--
+ .../components/server/console/StatGraphs.tsx  |  6 ++--
+ .../components/server/console/chart.ts        |  4 +--
+ .../server/console/style.module.css           |  2 +-
+ .../server/databases/DatabaseRow.tsx          |  2 +-
+ .../server/features/eula/EulaModalFeature.tsx |  2 +-
+ .../server/files/FileEditContainer.tsx        |  2 +-
+ .../components/server/files/FileObjectRow.tsx |  2 +-
+ .../server/network/AllocationRow.tsx          |  2 +-
+ .../server/schedules/ScheduleRow.tsx          |  2 +-
+ .../server/settings/SettingsContainer.tsx     |  2 +-
+ tailwind.config.js                            | 10 ++++++
+ 21 files changed, 59 insertions(+), 52 deletions(-)
+
+diff --git a/resources/scripts/components/MessageBox.tsx b/resources/scripts/components/MessageBox.tsx
+index 57a5cac..52f522f 100644
+--- a/resources/scripts/components/MessageBox.tsx
++++ b/resources/scripts/components/MessageBox.tsx
+@@ -15,7 +15,7 @@ const styling = (type?: FlashMessageType): TwStyle | string => {
+         case 'error':
+             return tw`bg-red-600 border-red-800`;
+         case 'info':
+-            return tw`bg-primary-600 border-primary-800`;
++            return tw`bg-mcm-500 border-mcm-700`;
+         case 'success':
+             return tw`bg-green-600 border-green-800`;
+         case 'warning':
+@@ -30,7 +30,7 @@ const getBackground = (type?: FlashMessageType): TwStyle | string => {
+         case 'error':
+             return tw`bg-red-500`;
+         case 'info':
+-            return tw`bg-primary-500`;
++            return tw`bg-mcm-400`;
+         case 'success':
+             return tw`bg-green-500`;
+         case 'warning':
+diff --git a/resources/scripts/components/NavigationBar.tsx b/resources/scripts/components/NavigationBar.tsx
+index 89180b1..d500c57 100644
+--- a/resources/scripts/components/NavigationBar.tsx
++++ b/resources/scripts/components/NavigationBar.tsx
+@@ -17,17 +17,17 @@ const RightNavigation = styled.div`
+     & > a,
+     & > button,
+     & > .navigation-link {
+-        ${tw`flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-all duration-150`};
++        ${tw`flex items-center h-full no-underline text-neutral-100 px-6 cursor-pointer transition-all duration-150`};
+ 
+         &:active,
+         &:hover {
+-            ${tw`text-neutral-100 bg-black`};
++            ${tw`bg-mcm-600`};
+         }
+ 
+         &:active,
+         &:hover,
+         &.active {
+-            box-shadow: inset 0 -2px ${theme`colors.cyan.600`.toString()};
++            box-shadow: inset 0 -2px ${theme`colors.mcm.300`.toString()};
+         }
+     }
+ `;
+@@ -46,14 +46,14 @@ export default () => {
+     };
+ 
+     return (
+-        <div className={'w-full bg-neutral-900 shadow-md overflow-x-auto'}>
++        <div className={'w-full bg-mcm-500 shadow-md overflow-x-auto'}>
+             <SpinnerOverlay visible={isLoggingOut} />
+             <div className={'mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]'}>
+                 <div id={'logo'} className={'flex-1'}>
+                     <Link
+                         to={'/'}
+                         className={
+-                            'text-2xl font-header px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150'
++                            'text-2xl font-header px-4 no-underline text-neutral-100 hover:text-neutral-50 transition-colors duration-150'
+                         }
+                     >
+                         {name}
+diff --git a/resources/scripts/components/auth/LoginFormContainer.tsx b/resources/scripts/components/auth/LoginFormContainer.tsx
+index 6274981..0dd8d73 100644
+--- a/resources/scripts/components/auth/LoginFormContainer.tsx
++++ b/resources/scripts/components/auth/LoginFormContainer.tsx
+@@ -33,10 +33,7 @@ export default forwardRef<HTMLFormElement, Props>(({ title, ...props }, ref) =>
+         {title && <h2 css={tw`text-3xl text-center text-neutral-100 font-medium py-4`}>{title}</h2>}
+         <FlashMessageRender css={tw`mb-2 px-1`} />
+         <Form {...props} ref={ref}>
+-            <div css={tw`md:flex w-full bg-white shadow-lg rounded-lg p-6 md:pl-0 mx-1`}>
+-                <div css={tw`flex-none select-none mb-6 md:mb-0 self-center`}>
+-                    <img src={'/assets/svgs/pterodactyl.svg'} css={tw`block w-48 md:w-64 mx-auto`} />
+-                </div>
++            <div css={tw`md:flex w-full bg-white shadow-lg rounded-lg p-6 mx-1`}>
+                 <div css={tw`flex-1`}>{props.children}</div>
+             </div>
+         </Form>
+diff --git a/resources/scripts/components/dashboard/ServerRow.tsx b/resources/scripts/components/dashboard/ServerRow.tsx
+index 8336e67..74d4b36 100644
+--- a/resources/scripts/components/dashboard/ServerRow.tsx
++++ b/resources/scripts/components/dashboard/ServerRow.tsx
+@@ -17,29 +17,29 @@ const isAlarmState = (current: number, limit: number): boolean => limit > 0 && c
+ 
+ const Icon = memo(
+     styled(FontAwesomeIcon)<{ $alarm: boolean }>`
+-        ${(props) => (props.$alarm ? tw`text-red-400` : tw`text-neutral-500`)};
++        ${(props) => (props.$alarm ? tw`text-red-400` : tw`text-mcm-500`)};
+     `,
+     isEqual
+ );
+ 
+ const IconDescription = styled.p<{ $alarm: boolean }>`
+     ${tw`text-sm ml-2`};
+-    ${(props) => (props.$alarm ? tw`text-white` : tw`text-neutral-400`)};
++    ${(props) => (props.$alarm ? tw`text-neutral-200` : tw`text-neutral-400`)};
+ `;
+ 
+ const StatusIndicatorBox = styled(GreyRowBox)<{ $status: ServerPowerState | undefined }>`
+     ${tw`grid grid-cols-12 gap-4 relative`};
+ 
+     & .status-bar {
+-        ${tw`w-2 bg-red-500 absolute right-0 z-20 rounded-full m-1 opacity-50 transition-all duration-150`};
++        ${tw`w-2 bg-red-400 absolute right-0 z-20 rounded-full m-1 opacity-50 transition-all duration-150`};
+         height: calc(100% - 0.5rem);
+ 
+         ${({ $status }) =>
+             !$status || $status === 'offline'
+-                ? tw`bg-red-500`
++                ? tw`bg-red-400`
+                 : $status === 'running'
+-                ? tw`bg-green-500`
+-                : tw`bg-yellow-500`};
++                ? tw`bg-green-400`
++                : tw`bg-yellow-400`};
+     }
+ 
+     &:hover .status-bar {
+@@ -91,7 +91,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
+     return (
+         <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
+             <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
+-                <div className={'icon'} css={tw`mr-4`}>
++                <div className={'icon'} css={tw`mr-4 bg-mcm-500 text-neutral-200 rounded-full p-3`}>
+                     <FontAwesomeIcon icon={faServer} />
+                 </div>
+                 <div>
+@@ -102,8 +102,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
+                 </div>
+             </div>
+             <div css={tw`flex-1 ml-4 lg:block lg:col-span-2 hidden`}>
+-                <div css={tw`flex justify-center`}>
+-                    <FontAwesomeIcon icon={faEthernet} css={tw`text-neutral-500`} />
++                <div css={tw`flex justify-start`}>
++                    <FontAwesomeIcon icon={faEthernet} css={tw`text-mcm-500`} />
+                     <p css={tw`text-sm text-neutral-400 ml-2`}>
+                         {server.allocations
+                             .filter((alloc) => alloc.isDefault)
+@@ -119,7 +119,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
+                 {!stats || isSuspended ? (
+                     isSuspended ? (
+                         <div css={tw`flex-1 text-center`}>
+-                            <span css={tw`bg-red-500 rounded px-2 py-1 text-red-100 text-xs`}>
++                            <span css={tw`bg-red-400 rounded px-2 py-1 text-red-100 text-xs`}>
+                                 {server.status === 'suspended' ? 'Suspended' : 'Connection Error'}
+                             </span>
+                         </div>
+@@ -141,31 +141,31 @@ export default ({ server, className }: { server: Server; className?: string }) =
+                 ) : (
+                     <React.Fragment>
+                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
+-                            <div css={tw`flex justify-center`}>
++                            <div css={tw`flex`}>
+                                 <Icon icon={faMicrochip} $alarm={alarms.cpu} />
+                                 <IconDescription $alarm={alarms.cpu}>
+                                     {stats.cpuUsagePercent.toFixed(2)} %
+                                 </IconDescription>
+                             </div>
+-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {cpuLimit}</p>
++                            <p css={tw`text-xs text-neutral-600 mt-1`}>of {cpuLimit}</p>
+                         </div>
+                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
+-                            <div css={tw`flex justify-center`}>
++                            <div css={tw`flex`}>
+                                 <Icon icon={faMemory} $alarm={alarms.memory} />
+                                 <IconDescription $alarm={alarms.memory}>
+                                     {bytesToString(stats.memoryUsageInBytes)}
+                                 </IconDescription>
+                             </div>
+-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {memoryLimit}</p>
++                            <p css={tw`text-xs text-neutral-600 mt-1`}>of {memoryLimit}</p>
+                         </div>
+                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
+-                            <div css={tw`flex justify-center`}>
++                            <div css={tw`flex`}>
+                                 <Icon icon={faHdd} $alarm={alarms.disk} />
+                                 <IconDescription $alarm={alarms.disk}>
+                                     {bytesToString(stats.diskUsageInBytes)}
+                                 </IconDescription>
+                             </div>
+-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {diskLimit}</p>
++                            <p css={tw`text-xs text-neutral-600 mt-1`}>of {diskLimit}</p>
+                         </div>
+                     </React.Fragment>
+                 )}
+diff --git a/resources/scripts/components/elements/Button.tsx b/resources/scripts/components/elements/Button.tsx
+index e02f00f..b0953b2 100644
+--- a/resources/scripts/components/elements/Button.tsx
++++ b/resources/scripts/components/elements/Button.tsx
+@@ -16,10 +16,10 @@ const ButtonStyle = styled.button<Omit<Props, 'isLoading'>>`
+     ${(props) =>
+         ((!props.isSecondary && !props.color) || props.color === 'primary') &&
+         css<Props>`
+-            ${(props) => !props.isSecondary && tw`bg-primary-500 border-primary-600 border text-primary-50`};
++            ${(props) => !props.isSecondary && tw`bg-mcm-500 border-mcm-600 border text-primary-50`};
+ 
+             &:hover:not(:disabled) {
+-                ${tw`bg-primary-600 border-primary-700`};
++                ${tw`bg-mcm-600 border-mcm-700`};
+             }
+         `};
+ 
+@@ -82,7 +82,7 @@ const ButtonStyle = styled.button<Omit<Props, 'isLoading'>>`
+             &:hover:not(:disabled) {
+                 ${tw`border-neutral-500 text-neutral-100`};
+                 ${(props) => props.color === 'red' && tw`bg-red-500 border-red-600 text-red-50`};
+-                ${(props) => props.color === 'primary' && tw`bg-primary-500 border-primary-600 text-primary-50`};
++                ${(props) => props.color === 'primary' && tw`bg-mcm-500 border-mcm-600 text-primary-50`};
+                 ${(props) => props.color === 'green' && tw`bg-green-500 border-green-600 text-green-50`};
+             }
+         `};
+diff --git a/resources/scripts/components/elements/Input.tsx b/resources/scripts/components/elements/Input.tsx
+index 677a501..2fa0f73 100644
+--- a/resources/scripts/components/elements/Input.tsx
++++ b/resources/scripts/components/elements/Input.tsx
+@@ -18,7 +18,7 @@ const light = css<Props>`
+ `;
+ 
+ const checkboxStyle = css<Props>`
+-    ${tw`bg-neutral-500 cursor-pointer appearance-none inline-block align-middle select-none flex-shrink-0 w-4 h-4 text-primary-400 border border-neutral-300 rounded-sm`};
++    ${tw`bg-neutral-500 cursor-pointer appearance-none inline-block align-middle select-none flex-shrink-0 w-4 h-4 text-mcm-400 border border-neutral-300 rounded-sm`};
+     color-adjust: exact;
+     background-origin: border-box;
+     transition: all 75ms linear, box-shadow 25ms linear;
+@@ -31,7 +31,7 @@ const checkboxStyle = css<Props>`
+     }
+ 
+     &:focus {
+-        ${tw`outline-none border-primary-300`};
++        ${tw`outline-none border-mcm-500`};
+         box-shadow: 0 0 0 1px rgba(9, 103, 210, 0.25);
+     }
+ `;
+@@ -54,7 +54,7 @@ const inputStyle = css<Props>`
+     }
+ 
+     &:not(:disabled):not(:read-only):focus {
+-        ${tw`shadow-md border-primary-300 ring-2 ring-primary-400 ring-opacity-50`};
++        ${tw`shadow-md border-mcm-400 ring-2 ring-mcm-500 ring-opacity-50`};
+         ${(props) => props.hasError && tw`border-red-300 ring-red-200`};
+     }
+ 
+diff --git a/resources/scripts/components/elements/ProgressBar.tsx b/resources/scripts/components/elements/ProgressBar.tsx
+index c94ae80..a406188 100644
+--- a/resources/scripts/components/elements/ProgressBar.tsx
++++ b/resources/scripts/components/elements/ProgressBar.tsx
+@@ -6,9 +6,9 @@ import { CSSTransition } from 'react-transition-group';
+ import tw from 'twin.macro';
+ 
+ const BarFill = styled.div`
+-    ${tw`h-full bg-cyan-400`};
++    ${tw`h-full bg-mcm-300`};
+     transition: 250ms ease-in-out;
+-    box-shadow: 0 -2px 10px 2px hsl(178, 78%, 57%);
++    box-shadow: 0 -2px 10px 2px hsl(220, 25%, 63%);
+ `;
+ 
+ type Timer = ReturnType<typeof setTimeout>;
+diff --git a/resources/scripts/components/elements/SubNavigation.tsx b/resources/scripts/components/elements/SubNavigation.tsx
+index 9a25b80..39f8c89 100644
+--- a/resources/scripts/components/elements/SubNavigation.tsx
++++ b/resources/scripts/components/elements/SubNavigation.tsx
+@@ -23,7 +23,7 @@ const SubNavigation = styled.div`
+             &:active,
+             &.active {
+                 ${tw`text-neutral-100`};
+-                box-shadow: inset 0 -2px ${theme`colors.cyan.600`.toString()};
++                box-shadow: inset 0 -2px ${theme`colors.mcm.400`.toString()};
+             }
+         }
+     }
+diff --git a/resources/scripts/components/elements/Switch.tsx b/resources/scripts/components/elements/Switch.tsx
+index 45c7384..06f11d0 100644
+--- a/resources/scripts/components/elements/Switch.tsx
++++ b/resources/scripts/components/elements/Switch.tsx
+@@ -12,7 +12,7 @@ const ToggleContainer = styled.div`
+         ${tw`hidden`};
+ 
+         &:checked + label {
+-            ${tw`bg-primary-500 border-primary-700 shadow-none`};
++            ${tw`bg-mcm-400 border-mcm-600 shadow-none`};
+         }
+ 
+         &:checked + label:before {
+diff --git a/resources/scripts/components/server/backups/BackupRow.tsx b/resources/scripts/components/server/backups/BackupRow.tsx
+index f59f472..3ed7d2b 100644
+--- a/resources/scripts/components/server/backups/BackupRow.tsx
++++ b/resources/scripts/components/server/backups/BackupRow.tsx
+@@ -53,9 +53,9 @@ export default ({ backup, className }: Props) => {
+                 <div css={tw`mr-4`}>
+                     {backup.completedAt !== null ? (
+                         backup.isLocked ? (
+-                            <FontAwesomeIcon icon={faLock} css={tw`text-yellow-500`} />
++                            <FontAwesomeIcon icon={faLock} css={tw`text-mcm-400`} />
+                         ) : (
+-                            <FontAwesomeIcon icon={faArchive} css={tw`text-neutral-300`} />
++                            <FontAwesomeIcon icon={faArchive} css={tw`text-mcm-400`} />
+                         )
+                     ) : (
+                         <Spinner size={'small'} />
+diff --git a/resources/scripts/components/server/console/StatGraphs.tsx b/resources/scripts/components/server/console/StatGraphs.tsx
+index 4c19bd1..cc6b4ac 100644
+--- a/resources/scripts/components/server/console/StatGraphs.tsx
++++ b/resources/scripts/components/server/console/StatGraphs.tsx
+@@ -35,8 +35,8 @@ export default () => {
+             return {
+                 ...opts,
+                 label: !index ? 'Network In' : 'Network Out',
+-                borderColor: !index ? theme('colors.cyan.400') : theme('colors.yellow.400'),
+-                backgroundColor: hexToRgba(!index ? theme('colors.cyan.700') : theme('colors.yellow.700'), 0.5),
++                borderColor: !index ? theme('colors.mcm.400') : theme('colors.yellow.400'),
++                backgroundColor: hexToRgba(!index ? theme('colors.mcm.500') : theme('colors.yellow.500'), 0.5),
+             };
+         },
+     });
+@@ -83,7 +83,7 @@ export default () => {
+                             <CloudDownloadIcon className={'mr-2 w-4 h-4 text-yellow-400'} />
+                         </Tooltip>
+                         <Tooltip arrow content={'Outbound'}>
+-                            <CloudUploadIcon className={'w-4 h-4 text-cyan-400'} />
++                            <CloudUploadIcon className={'w-4 h-4 text-mcm-400'} />
+                         </Tooltip>
+                     </>
+                 }
+diff --git a/resources/scripts/components/server/console/chart.ts b/resources/scripts/components/server/console/chart.ts
+index 4a2cbbd..aba06f3 100644
+--- a/resources/scripts/components/server/console/chart.ts
++++ b/resources/scripts/components/server/console/chart.ts
+@@ -91,8 +91,8 @@ function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback |
+                         fill: true,
+                         label,
+                         data: Array(20).fill(0),
+-                        borderColor: theme('colors.cyan.400'),
+-                        backgroundColor: hexToRgba(theme('colors.cyan.700'), 0.5),
++                        borderColor: theme('colors.mcm.400'),
++                        backgroundColor: hexToRgba(theme('colors.mcm.500'), 0.5),
+                     },
+                     index
+                 )
+diff --git a/resources/scripts/components/server/console/style.module.css b/resources/scripts/components/server/console/style.module.css
+index 0c99bba..83437ab 100644
+--- a/resources/scripts/components/server/console/style.module.css
++++ b/resources/scripts/components/server/console/style.module.css
+@@ -54,7 +54,7 @@
+         @apply relative bg-gray-900 px-2 text-gray-100 pl-10 pr-4 py-2 w-full font-mono text-sm sm:rounded-b;
+         @apply focus:ring-0 outline-none focus-visible:outline-none;
+         @apply border-0 border-b-2 border-transparent transition-colors duration-100;
+-        @apply active:border-cyan-500 focus:border-cyan-500;
++        @apply active:border-mcm-400 focus:border-mcm-400;
+     }
+ }
+ 
+diff --git a/resources/scripts/components/server/databases/DatabaseRow.tsx b/resources/scripts/components/server/databases/DatabaseRow.tsx
+index 87b3463..2c89b03 100644
+--- a/resources/scripts/components/server/databases/DatabaseRow.tsx
++++ b/resources/scripts/components/server/databases/DatabaseRow.tsx
+@@ -142,7 +142,7 @@ export default ({ database, className }: Props) => {
+                 </div>
+             </Modal>
+             <GreyRowBox $hoverable={false} className={className} css={tw`mb-2`}>
+-                <div css={tw`hidden md:block`}>
++                <div css={tw`hidden md:block text-mcm-400`}>
+                     <FontAwesomeIcon icon={faDatabase} fixedWidth />
+                 </div>
+                 <div css={tw`flex-1 ml-4`}>
+diff --git a/resources/scripts/components/server/features/eula/EulaModalFeature.tsx b/resources/scripts/components/server/features/eula/EulaModalFeature.tsx
+index fd7afe1..d9b8d74 100644
+--- a/resources/scripts/components/server/features/eula/EulaModalFeature.tsx
++++ b/resources/scripts/components/server/features/eula/EulaModalFeature.tsx
+@@ -70,7 +70,7 @@ const EulaModalFeature = () => {
+                 By pressing {'"I Accept"'} below you are indicating your agreement to the&nbsp;
+                 <a
+                     target={'_blank'}
+-                    css={tw`text-primary-300 underline transition-colors duration-150 hover:text-primary-400`}
++                    css={tw`text-primary-300 underline transition-colors duration-150 hover:text-mcm-400`}
+                     rel={'noreferrer noopener'}
+                     href='https://account.mojang.com/documents/minecraft_eula'
+                 >
+diff --git a/resources/scripts/components/server/files/FileEditContainer.tsx b/resources/scripts/components/server/files/FileEditContainer.tsx
+index 28ba91d..b8a8b5d 100644
+--- a/resources/scripts/components/server/files/FileEditContainer.tsx
++++ b/resources/scripts/components/server/files/FileEditContainer.tsx
+@@ -92,7 +92,7 @@ export default () => {
+                 </div>
+             </ErrorBoundary>
+             {hash.replace(/^#/, '').endsWith('.pteroignore') && (
+-                <div css={tw`mb-4 p-4 border-l-4 bg-neutral-900 rounded border-cyan-400`}>
++                <div css={tw`mb-4 p-4 border-l-4 bg-neutral-900 rounded border-mcm-400`}>
+                     <p css={tw`text-neutral-300 text-sm`}>
+                         You&apos;re editing a <code css={tw`font-mono bg-black rounded py-px px-1`}>.pteroignore</code>{' '}
+                         file. Any files or directories listed in here will be excluded from backups. Wildcards are
+diff --git a/resources/scripts/components/server/files/FileObjectRow.tsx b/resources/scripts/components/server/files/FileObjectRow.tsx
+index 2d92aee..e5d65a3 100644
+--- a/resources/scripts/components/server/files/FileObjectRow.tsx
++++ b/resources/scripts/components/server/files/FileObjectRow.tsx
+@@ -49,7 +49,7 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
+     >
+         <SelectFileCheckbox name={file.name} />
+         <Clickable file={file}>
+-            <div css={tw`flex-none self-center text-neutral-400 ml-6 mr-4 text-lg pl-3`}>
++            <div css={tw`flex-none self-center text-mcm-400 ml-6 mr-4 text-lg pl-3`}>
+                 {file.isFile ? (
+                     <FontAwesomeIcon
+                         icon={file.isSymlink ? faFileImport : file.isArchiveType() ? faFileArchive : faFileAlt}
+diff --git a/resources/scripts/components/server/network/AllocationRow.tsx b/resources/scripts/components/server/network/AllocationRow.tsx
+index e68bc33..8ec14d9 100644
+--- a/resources/scripts/components/server/network/AllocationRow.tsx
++++ b/resources/scripts/components/server/network/AllocationRow.tsx
+@@ -62,7 +62,7 @@ const AllocationRow = ({ allocation }: Props) => {
+     return (
+         <GreyRowBox $hoverable={false} className={'flex-wrap md:flex-nowrap mt-2'}>
+             <div className={'flex items-center w-full md:w-auto'}>
+-                <div className={'pl-4 pr-6 text-neutral-400'}>
++                <div className={'pl-4 pr-6 text-mcm-400'}>
+                     <FontAwesomeIcon icon={faNetworkWired} />
+                 </div>
+                 <div className={'mr-4 flex-1 md:w-40'}>
+diff --git a/resources/scripts/components/server/schedules/ScheduleRow.tsx b/resources/scripts/components/server/schedules/ScheduleRow.tsx
+index 1a7da64..65d3c8b 100644
+--- a/resources/scripts/components/server/schedules/ScheduleRow.tsx
++++ b/resources/scripts/components/server/schedules/ScheduleRow.tsx
+@@ -8,7 +8,7 @@ import ScheduleCronRow from '@/components/server/schedules/ScheduleCronRow';
+ 
+ export default ({ schedule }: { schedule: Schedule }) => (
+     <>
+-        <div css={tw`hidden md:block`}>
++        <div css={tw`hidden md:block text-mcm-400`}>
+             <FontAwesomeIcon icon={faCalendarAlt} fixedWidth />
+         </div>
+         <div css={tw`flex-1 md:ml-4`}>
+diff --git a/resources/scripts/components/server/settings/SettingsContainer.tsx b/resources/scripts/components/server/settings/SettingsContainer.tsx
+index bcdc80b..05a3268 100644
+--- a/resources/scripts/components/server/settings/SettingsContainer.tsx
++++ b/resources/scripts/components/server/settings/SettingsContainer.tsx
+@@ -43,7 +43,7 @@ export default () => {
+                             </div>
+                             <div css={tw`mt-6 flex items-center`}>
+                                 <div css={tw`flex-1`}>
+-                                    <div css={tw`border-l-4 border-cyan-500 p-3`}>
++                                    <div css={tw`border-l-4 border-mcm-400 p-3`}>
+                                         <p css={tw`text-xs text-neutral-200`}>
+                                             Your SFTP password is the same as the password you use to access this panel.
+                                         </p>
+diff --git a/tailwind.config.js b/tailwind.config.js
+index 7c814bd..c7d4140 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -13,6 +13,15 @@ const gray = {
+     900: 'hsl(210, 24%, 16%)',
+ };
+ 
++const mcm = {
++    200: 'hsl(220, 25%, 73%)',
++    300: 'hsl(220, 25%, 63%)',
++    400: 'hsl(220, 25%, 53%)',
++    500: 'hsl(220, 25%, 43%)',
++    600: 'hsl(220, 25%, 33%)',
++    700: 'hsl(220, 25%, 23%)',
++};
++
+ module.exports = {
+     content: [
+         './resources/scripts/**/*.{js,ts,tsx}',
+@@ -30,6 +39,7 @@ module.exports = {
+                 gray: gray,
+                 neutral: gray,
+                 cyan: colors.cyan,
++                mcm: mcm,
+             },
+             fontSize: {
+                 '2xs': '0.625rem',
+-- 
+2.36.1.windows.1
+
