@@ -2,7 +2,7 @@
 
 ## Information
 
-Panel version: `v1.9.0`
+Panel version: `v1.9.1`
 
 ## Applying theme
 

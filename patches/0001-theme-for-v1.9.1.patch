@@ -1,7 +1,7 @@
-From ca17a18d0285613d0d7255016c68a4ab0a21ff15 Mon Sep 17 00:00:00 2001
+From e4995edf5898a72bb2063d95d835d9cb3ac1e957 Mon Sep 17 00:00:00 2001
 From: DerLev <levin.schroeren@gmail.com>
-Date: Tue, 28 Jun 2022 00:40:16 +0200
-Subject: [PATCH] theme for v1.9.0
+Date: Tue, 28 Jun 2022 11:29:47 +0200
+Subject: [PATCH] theme for v1.9.1
 
 ---
  resources/scripts/components/MessageBox.tsx   |  4 +--
@@ -13,6 +13,7 @@ Subject: [PATCH] theme for v1.9.0
  .../components/elements/ProgressBar.tsx       |  4 +--
  .../components/elements/SubNavigation.tsx     |  2 +-
  .../scripts/components/elements/Switch.tsx    |  2 +-
+ .../elements/button/style.module.css          |  8 ++---
  .../components/server/backups/BackupRow.tsx   |  4 +--
  .../components/server/console/StatGraphs.tsx  |  6 ++--
  .../components/server/console/chart.ts        |  4 +--
@@ -21,11 +22,11 @@ Subject: [PATCH] theme for v1.9.0
  .../server/features/eula/EulaModalFeature.tsx |  2 +-
  .../server/files/FileEditContainer.tsx        |  2 +-
  .../components/server/files/FileObjectRow.tsx |  2 +-
- .../server/network/AllocationRow.tsx          |  2 +-
+ .../server/network/AllocationRow.tsx          |  4 +--
  .../server/schedules/ScheduleRow.tsx          |  2 +-
  .../server/settings/SettingsContainer.tsx     |  2 +-
  tailwind.config.js                            | 10 ++++++
- 21 files changed, 59 insertions(+), 52 deletions(-)
+ 22 files changed, 64 insertions(+), 57 deletions(-)
 
 diff --git a/resources/scripts/components/MessageBox.tsx b/resources/scripts/components/MessageBox.tsx
 index 57a5cac..52f522f 100644
@@ -313,6 +314,30 @@ index 45c7384..06f11d0 100644
          }
  
          &:checked + label:before {
+diff --git a/resources/scripts/components/elements/button/style.module.css b/resources/scripts/components/elements/button/style.module.css
+index 700c676..4009f9c 100644
+--- a/resources/scripts/components/elements/button/style.module.css
++++ b/resources/scripts/components/elements/button/style.module.css
+@@ -34,15 +34,15 @@
+ }
+ 
+ .primary {
+-    @apply bg-blue-600 text-blue-50;
+-    @apply hover:bg-blue-500 active:bg-blue-500 focus:ring-blue-400 focus:ring-opacity-75;
++    @apply bg-mcm-500 text-blue-50;
++    @apply hover:bg-mcm-400 active:bg-mcm-400 focus:ring-mcm-400 focus:ring-opacity-75;
+ 
+     &.secondary {
+-        @apply hover:bg-blue-600 active:bg-blue-600;
++        @apply hover:bg-mcm-600 active:bg-mcm-600;
+     }
+ 
+     &:disabled {
+-        @apply bg-blue-500/75 text-blue-200/75;
++        @apply bg-mcm-500/75 text-mcm-200/75;
+     }
+ }
+ 
 diff --git a/resources/scripts/components/server/backups/BackupRow.tsx b/resources/scripts/components/server/backups/BackupRow.tsx
 index f59f472..3ed7d2b 100644
 --- a/resources/scripts/components/server/backups/BackupRow.tsx
@@ -330,7 +355,7 @@ index f59f472..3ed7d2b 100644
                      ) : (
                          <Spinner size={'small'} />
 diff --git a/resources/scripts/components/server/console/StatGraphs.tsx b/resources/scripts/components/server/console/StatGraphs.tsx
-index 4c19bd1..cc6b4ac 100644
+index a0049fe..9a4cfbc 100644
 --- a/resources/scripts/components/server/console/StatGraphs.tsx
 +++ b/resources/scripts/components/server/console/StatGraphs.tsx
 @@ -35,8 +35,8 @@ export default () => {
@@ -349,18 +374,18 @@ index 4c19bd1..cc6b4ac 100644
                          </Tooltip>
                          <Tooltip arrow content={'Outbound'}>
 -                            <CloudUploadIcon className={'w-4 h-4 text-cyan-400'} />
-+                            <CloudUploadIcon className={'w-4 h-4 text-mcm-400'} />
++                            <CloudUploadIcon className={'w-4 h-4 text-mcm-300'} />
                          </Tooltip>
                      </>
                  }
 diff --git a/resources/scripts/components/server/console/chart.ts b/resources/scripts/components/server/console/chart.ts
-index 4a2cbbd..aba06f3 100644
+index 84e1a58..12fb07c 100644
 --- a/resources/scripts/components/server/console/chart.ts
 +++ b/resources/scripts/components/server/console/chart.ts
 @@ -91,8 +91,8 @@ function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback |
                          fill: true,
                          label,
-                         data: Array(20).fill(0),
+                         data: Array(20).fill(-5),
 -                        borderColor: theme('colors.cyan.400'),
 -                        backgroundColor: hexToRgba(theme('colors.cyan.700'), 0.5),
 +                        borderColor: theme('colors.mcm.400'),
@@ -434,7 +459,7 @@ index 2d92aee..e5d65a3 100644
                      <FontAwesomeIcon
                          icon={file.isSymlink ? faFileImport : file.isArchiveType() ? faFileArchive : faFileAlt}
 diff --git a/resources/scripts/components/server/network/AllocationRow.tsx b/resources/scripts/components/server/network/AllocationRow.tsx
-index e68bc33..8ec14d9 100644
+index e68bc33..20cda4d 100644
 --- a/resources/scripts/components/server/network/AllocationRow.tsx
 +++ b/resources/scripts/components/server/network/AllocationRow.tsx
 @@ -62,7 +62,7 @@ const AllocationRow = ({ allocation }: Props) => {
@@ -446,6 +471,15 @@ index e68bc33..8ec14d9 100644
                      <FontAwesomeIcon icon={faNetworkWired} />
                  </div>
                  <div className={'mr-4 flex-1 md:w-40'}>
+@@ -96,7 +96,7 @@ const AllocationRow = ({ allocation }: Props) => {
+             </div>
+             <div className={'flex justify-end space-x-4 mt-4 w-full md:mt-0 md:w-48'}>
+                 {allocation.isDefault ? (
+-                    <Button size={Button.Sizes.Small} className={'!text-gray-50 !bg-blue-600'} disabled>
++                    <Button size={Button.Sizes.Small} className={'!text-gray-50 !bg-mcm-500'} disabled>
+                         Primary
+                     </Button>
+                 ) : (
 diff --git a/resources/scripts/components/server/schedules/ScheduleRow.tsx b/resources/scripts/components/server/schedules/ScheduleRow.tsx
 index 1a7da64..65d3c8b 100644
 --- a/resources/scripts/components/server/schedules/ScheduleRow.tsx
