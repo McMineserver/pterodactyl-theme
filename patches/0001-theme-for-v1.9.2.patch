@@ -1,7 +1,7 @@
-From e4995edf5898a72bb2063d95d835d9cb3ac1e957 Mon Sep 17 00:00:00 2001
+From c8708af73fe47d2f8134dfd183563cf6feaccc33 Mon Sep 17 00:00:00 2001
 From: DerLev <levin.schroeren@gmail.com>
-Date: Tue, 28 Jun 2022 11:29:47 +0200
-Subject: [PATCH] theme for v1.9.1
+Date: Mon, 4 Jul 2022 14:17:17 +0200
+Subject: [PATCH] theme for v1.9.2
 
 ---
  resources/scripts/components/MessageBox.tsx   |  4 +--
@@ -109,7 +109,7 @@ index 6274981..0dd8d73 100644
              </div>
          </Form>
 diff --git a/resources/scripts/components/dashboard/ServerRow.tsx b/resources/scripts/components/dashboard/ServerRow.tsx
-index 8336e67..74d4b36 100644
+index 08637bf..f8e0b1e 100644
 --- a/resources/scripts/components/dashboard/ServerRow.tsx
 +++ b/resources/scripts/components/dashboard/ServerRow.tsx
 @@ -17,29 +17,29 @@ const isAlarmState = (current: number, limit: number): boolean => limit > 0 && c
@@ -152,8 +152,8 @@ index 8336e67..74d4b36 100644
      return (
          <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
              <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
--                <div className={'icon'} css={tw`mr-4`}>
-+                <div className={'icon'} css={tw`mr-4 bg-mcm-500 text-neutral-200 rounded-full p-3`}>
+-                <div className={'icon mr-4'}>
++                <div className={'icon mr-4 bg-mcm-500 text-neutral-200 rounded-full p-3'}>
                      <FontAwesomeIcon icon={faServer} />
                  </div>
                  <div>
@@ -355,7 +355,7 @@ index f59f472..3ed7d2b 100644
                      ) : (
                          <Spinner size={'small'} />
 diff --git a/resources/scripts/components/server/console/StatGraphs.tsx b/resources/scripts/components/server/console/StatGraphs.tsx
-index a0049fe..9a4cfbc 100644
+index 4c17efe..09bf4cf 100644
 --- a/resources/scripts/components/server/console/StatGraphs.tsx
 +++ b/resources/scripts/components/server/console/StatGraphs.tsx
 @@ -35,8 +35,8 @@ export default () => {
@@ -369,7 +369,7 @@ index a0049fe..9a4cfbc 100644
              };
          },
      });
-@@ -83,7 +83,7 @@ export default () => {
+@@ -82,7 +82,7 @@ export default () => {
                              <CloudDownloadIcon className={'mr-2 w-4 h-4 text-yellow-400'} />
                          </Tooltip>
                          <Tooltip arrow content={'Outbound'}>
@@ -379,7 +379,7 @@ index a0049fe..9a4cfbc 100644
                      </>
                  }
 diff --git a/resources/scripts/components/server/console/chart.ts b/resources/scripts/components/server/console/chart.ts
-index 84e1a58..12fb07c 100644
+index 65f919a..8cf44a2 100644
 --- a/resources/scripts/components/server/console/chart.ts
 +++ b/resources/scripts/components/server/console/chart.ts
 @@ -91,8 +91,8 @@ function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback |
@@ -394,7 +394,7 @@ index 84e1a58..12fb07c 100644
                      index
                  )
 diff --git a/resources/scripts/components/server/console/style.module.css b/resources/scripts/components/server/console/style.module.css
-index 0c99bba..83437ab 100644
+index 8088fcb..8b37470 100644
 --- a/resources/scripts/components/server/console/style.module.css
 +++ b/resources/scripts/components/server/console/style.module.css
 @@ -54,7 +54,7 @@
@@ -446,14 +446,14 @@ index 28ba91d..b8a8b5d 100644
                          You&apos;re editing a <code css={tw`font-mono bg-black rounded py-px px-1`}>.pteroignore</code>{' '}
                          file. Any files or directories listed in here will be excluded from backups. Wildcards are
 diff --git a/resources/scripts/components/server/files/FileObjectRow.tsx b/resources/scripts/components/server/files/FileObjectRow.tsx
-index 2d92aee..e5d65a3 100644
+index 8032dab..f2d2e9d 100644
 --- a/resources/scripts/components/server/files/FileObjectRow.tsx
 +++ b/resources/scripts/components/server/files/FileObjectRow.tsx
-@@ -49,7 +49,7 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
+@@ -44,7 +44,7 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
      >
          <SelectFileCheckbox name={file.name} />
          <Clickable file={file}>
--            <div css={tw`flex-none self-center text-neutral-400 ml-6 mr-4 text-lg pl-3`}>
+-            <div css={tw`flex-none text-neutral-400 ml-6 mr-4 text-lg pl-3`}>
 +            <div css={tw`flex-none self-center text-mcm-400 ml-6 mr-4 text-lg pl-3`}>
                  {file.isFile ? (
                      <FontAwesomeIcon
@@ -535,5 +535,5 @@ index 7c814bd..c7d4140 100644
              fontSize: {
                  '2xs': '0.625rem',
 -- 
-2.36.1.windows.1
+2.37.0.windows.1
 
