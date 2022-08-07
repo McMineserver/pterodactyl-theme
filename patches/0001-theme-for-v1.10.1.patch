@@ -1,7 +1,7 @@
-From 74742235216232a9250704ccb5b3726b5de54639 Mon Sep 17 00:00:00 2001
+From 1318686f574dae3cca7a81ac51d90b19590d53f2 Mon Sep 17 00:00:00 2001
 From: DerLev <levin.schroeren@gmail.com>
-Date: Thu, 7 Jul 2022 20:13:38 +0200
-Subject: [PATCH] theme for v1.9.2
+Date: Sun, 7 Aug 2022 14:19:14 +0200
+Subject: [PATCH] theme for v1.10.1
 
 ---
  resources/scripts/components/MessageBox.tsx   |  4 +--
@@ -535,5 +535,5 @@ index 7c814bd..c7d4140 100644
              fontSize: {
                  '2xs': '0.625rem',
 -- 
-2.37.0.windows.1
+2.37.1.windows.1
 
