@@ -91,7 +91,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
     return (
         <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
             <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
-                <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
+                <div css={tw`rounded-full w-1 flex items-center justify-center bg-gray-500 p-3 mr-4`}>
                     <FontAwesomeIcon icon={faServer} />
                 </div>
                 <div>
